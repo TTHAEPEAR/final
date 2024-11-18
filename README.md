@@ -5,4 +5,3 @@ As this activity focuses on how backend works, the backend stores data in memory
 
 To download the source code, you can clone with git or download as a zip file (click a green button "< > Code" on the top right of this readme and select Download Zip).
 Unzip the file and then move to your remote server using VScode.
-#fgrgrccddd
