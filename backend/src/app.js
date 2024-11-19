@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
 
-import ItemRoute from "./routes/itemRoute.js";
+import ItemRoute from "./routes/items.js";
 
 const app = express();
+const PORT = 5000 || process.env.PORT;
 
 // body-parser
 app.use(express.json());

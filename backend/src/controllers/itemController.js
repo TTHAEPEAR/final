@@ -1,4 +1,4 @@
-import { itemFromObject } from "../models/itemModel.js";
+import { itemFromObject } from "../models/Item.js";
 import { items } from "../data/items.js";
 import { Console } from "console";
 

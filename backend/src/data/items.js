@@ -1,2 +1,2 @@
-/** @type {import("../models/itemModel").Item[]} */
+/** @type {import("../models/Item").Item[]} */
 export const items = [];

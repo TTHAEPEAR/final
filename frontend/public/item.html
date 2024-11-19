@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Auction App</title>
+  <title>Item - Auction App</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Welcome to the Auction App</h1>
-    <a href="register.html">Register</a> | <a href="login.html">Login</a>
-  </header>
   <main>
-    <h2>Available Auctions</h2>
-    <div id="items-container"></div>
+    <div id="item-details"></div>
+    <form id="bidForm">
+      <input type="number" id="bidAmount" placeholder="Enter your bid" required />
+      <button type="submit">Place Bid</button>
+    </form>
   </main>
   <script src="scripts/items.js"></script>
 </body>

@@ -1,22 +1,21 @@
-import app from "./app.js";
+const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./db');
+const cors = require('cors');
 
-// This is for maintaining the server.
-process.on("uncaughtException", (err) => {
-  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
-  console.log(err.name, err.message);
-  console.log(err.stack);
-  process.exit(1);
-});
+dotenv.config();
+connectDB();
 
-process.on("unhandledRejection", (err) => {
-  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
-  console.log(`${err}`);
-  server.close(() => {
-    process.exit(1);
-  });
-});
+const app = express();
 
-const PORT = 3222;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Backend Server ready at http://localhost:${PORT}`);
-});
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/auth', require('./routes/auth'));
+app.use('/items', require('./routes/items'));
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
