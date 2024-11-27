@@ -28,7 +28,7 @@ async function fetchUserData() {
         const userElement = document.createElement('div');
         userElement.classList.add('user-item');
         userElement.innerHTML = `
-          <img src="${user.image}" alt="${user.name}" style="width: 100%; height: auto; border-radius: 5px;"/>
+          <img src="${user.imageUrl}" alt="${user.name}" width="200" />
           <h3>Name : ${user.name}</h3>
           <p>Detail : ${user.detail}</p>
           <p>Current Min Bid: ${user.currentBid}</p>
@@ -146,6 +146,7 @@ document.getElementById('add-item-form').addEventListener('submit', async (e) =>
     // อัปเดต UI หรือแจ้งเตือนความสำเร็จ
     alert('Item added successfully!');
     e.target.reset();
+    fetchUserData();
   } catch (error) {
     console.error('Error uploading item:', error);
     alert(`Error: ${error.message}`);

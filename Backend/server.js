@@ -3,7 +3,7 @@ const morgan  = require("morgan");
 const cors = require("cors");
 const bodyParse = require("body-parser");
 const connectDB = require("./Config/db")
-
+const path = require("path");
 const app = express();
 
 connectDB();
@@ -16,7 +16,8 @@ app.use(express.json());
 
 const productroute = require("./Routes/product")
 app.use('/api',productroute);
-//app.use("/api",express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 const userroute = require("./Routes/user")
 app.use('/user',userroute);
