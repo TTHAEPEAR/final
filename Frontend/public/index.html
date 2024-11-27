@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Auction App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Auction App</h1>
+    <a href="register.html">Register</a> | <a href="login.html">Login</a>
+  </header>
+  <main>
+    <h2>Available Auctions</h2>
+    <div id="items-container"></div>
+
+    <div class="add-item-form">
+      <h3>Add New Auction Item</h3>
+  
+      <form id="add-item-form" enctype="multipart/form-data">
+        <input type="text" id="item-name" placeholder="Item Name" required />
+        <textarea id="item-detail" placeholder="Item Detail" required></textarea>
+        <input type="number" id="min-bid" placeholder="Starting Bid" required />
+        <input type="datetime-local" id="end-time" required />
+        <input type="file" id="item-image" accept="image/*" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>`;
+  </main>
+  <script src="scripts/product.js"></script>
+</body>
+</html>
