@@ -5,6 +5,7 @@ async function fetchUserData() {
     try {
       // ดึงข้อมูลจาก backend
       const response = await fetch('http://localhost:5000/api'); // ปรับ URL ตาม API ของคุณ
+      
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -115,8 +116,19 @@ function startCountdown() {
 document.getElementById('add-item-form').addEventListener('submit', async (e) => {
   e.preventDefault(); // ป้องกันการรีเฟรชหน้า
 
-  const formData = new FormData(e.target);
+  const name = document.getElementById('name').value;
+  const detail = document.getElementById('detail').value;
+  const startingBid = document.getElementById('startingBid').value;
+  const endTime = document.getElementById('endTime').value;
+  const image = document.getElementById('image').files[0]; // ดึงไฟล์รูปภาพ
 
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('detail', detail);
+  formData.append('startingBid', startingBid);
+  formData.append('endTime', endTime);
+  formData.append('image', image);
+  
   try {
     const response = await fetch('http://localhost:5000/api', {
       method: 'POST',
@@ -139,45 +151,3 @@ document.getElementById('add-item-form').addEventListener('submit', async (e) =>
     alert(`Error: ${error.message}`);
   }
 });
-
-
-/* async function handleAddItem(event) {
-  event.preventDefault();
-
-  const name = document.getElementById('item-name').value;
-  const detail = document.getElementById('item-detail').value;
-  const minBid = document.getElementById('min-bid').value;
-  const endTime = document.getElementById('end-time').value;
-  const image = document.getElementById('item-image').files[0];
-
-  if (!image) {
-    alert('Please select an image for the item.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('name', name);
-  formData.append('detail', detail);
-  formData.append('minBid', minBid);
-  formData.append('endTime', endTime);
-  formData.append('image', image);
-
-  try {
-    const response = await fetch('http://localhost:5000/api', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (response.ok) {
-      alert('Item added successfully!');
-      fetchUserData(); // รีเฟรชข้อมูลหลังจากเพิ่มสินค้าใหม่
-    } else {
-      const error = await response.json();
-      alert(`Failed to add item: ${error.message}`);
-    }
-  } catch (error) {
-    console.error('Error adding item:', error);
-    alert('An error occurred while adding the item.');
-  }
-}
- */

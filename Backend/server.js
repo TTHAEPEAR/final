@@ -16,7 +16,7 @@ app.use(express.json());
 
 const productroute = require("./Routes/product")
 app.use('/api',productroute);
-//app.use("/uploads",express.static(path.join(__dirname, 'uploads')));
+//app.use("/api",express.static(path.join(__dirname, 'uploads')));
 
 const userroute = require("./Routes/user")
 app.use('/user',userroute);

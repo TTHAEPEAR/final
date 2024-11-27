@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../Models/product")
-const path = require("path");
-const multer = require("multer");
+
 
 
 
@@ -10,6 +9,7 @@ const multer = require("multer");
 router.get('/', async(req,res) => //แสดงทุกชิ้น
 {
     try{
+        
         const product = await Product.find({}).exec();
         res.send(product);
     }catch(err){
@@ -32,48 +32,35 @@ router.get("/:id", async(req,res)=> // แสดงเฉพาะที่ค�
 })
 
 //เริ่มพารทอัพของ
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // โฟลเดอร์ที่เก็บรูปภาพ
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname)); // ตั้งชื่อไฟล์ใหม่
-    },
+const {upload} = require("../Middleware/upload");
+router.post('/', upload, async (req, res) => {
+  try {
+    const { name, detail, startingBid, endTime } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'Image is required' });
+    }
+
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+
+    // บันทึกข้อมูลในฐานข้อมูล
+    const newItem = new Product({
+      name,
+      detail,
+      startingBid,
+      currentBid: startingBid,
+      endTime,
+      imageUrl // เก็บ URL ของรูปในฐานข้อมูล
+    });
+
+    await newItem.save();
+
+    res.status(201).json({ message: 'Item added successfully', item: newItem });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to add item', error });
+  }
 });
-  
-const upload = multer({ storage });
-
-router.post ('/',upload.single("item-image"), async (req,res) => 
-    {
-       // if (!req.file) {
-           // return res.status(400).json({ message: 'No file uploaded' });
-         // }
-        
-        try{ 
-            const { name, detail, startingBid, endTime } = req.body;
-            //const image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-
-            if (!name || !detail || !startingBid || !endTime /*|| !image*/) {
-                return res.status(400).json({ message: 'All fields are required.' });
-            }
-            const newItem = new Product({ name,detail:req.body.detail ,startingBid: startingBid,currentBid:startingBid,endTime,/*image:image, เก็บ URL ของรูปภาพ */bidderId: null,});
-            await newItem.save();
-            res.status(201).json({ message: 'Auction item added successfully.' });
-        } catch (error) {
-            console.error('Error adding new item:', error);
-            res.status(500).json({ message: 'Internal server error.' });
-        }
-        });
-
-        // เสิร์ฟไฟล์ในโฟลเดอร์ uploads
-        //router.use('/api', express.static(path.join(__dirname, 'uploads')));
-        //ข้างล่างโค้ดที่อัพได้แต่ไม่มีรุป
-        /* res.send("Test post")
-        const product = await Product(req.body).save();
-        }catch(err){
-            console.log(err);
-            res.status(500).send("server Error!");
-        } */
         
 
 
