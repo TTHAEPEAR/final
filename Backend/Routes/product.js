@@ -89,4 +89,38 @@ router.put('/:id', async(req,res) =>
             res.status(500).json({ message: 'Internal server error.' });
           }
     });
+    const deleteExpiredItems = async () => {
+      try {
+        const currentTime = new Date();
+    
+        // ค้นหาสินค้าที่เวลาประมูลหมดแล้ว (endTime <= currentTime)
+        const expiredItems = await Product.find({ endTime: { $lte: currentTime } });
+    
+        if (expiredItems.length > 0) {
+          // ลบสินค้าที่เวลาประมูลหมดแล้ว
+          await Product.deleteMany({ endTime: { $lte: currentTime } });
+          console.log(`Deleted ${expiredItems.length} expired items.`);
+        }
+      } catch (error) {
+        console.error('Error deleting expired items:', error);
+      }
+    };
+    
+    router.delete('/:id', async (req, res) => {
+      try {
+        const { id } = req.params;
+        
+        // ลบสินค้าโดยใช้ ID
+        const deletedItem = await Product.findByIdAndDelete(id);
+    
+        if (!deletedItem) {
+          return res.status(404).json({ message: 'Auction item not found' });
+        }
+    
+        res.status(200).json({ message: 'Item deleted successfully' });
+      } catch (error) {
+        console.error('Error deleting item:', error);
+        res.status(500).json({ message: 'Failed to delete item', error });
+      }
+    });
 module.exports  = router;

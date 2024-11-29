@@ -93,6 +93,7 @@ function startCountdown() {
       const endTime = new Date(element.getAttribute('data-end-time')).getTime();
       const now = new Date().getTime();
       const timeLeft = endTime - now;
+      const itemId = element.closest('.user-item').querySelector('.bid-button').getAttribute('data-id'); // ดึง itemId จากปุ่มบิด
 
       if (timeLeft > 0) {
         // คำนวณเวลาในรูปแบบ วัน ชั่วโมง นาที วินาที
@@ -105,6 +106,29 @@ function startCountdown() {
       } else {
         // หากเวลาหมด
         element.textContent = "Auction ended";
+        
+        setTimeout(async () => {
+          element.textContent = "Deleting";
+          try {
+            const response = await fetch(`http://localhost:5000/api/${itemId}`, {
+              method: 'DELETE',  // ใช้ DELETE request เพื่อลบข้อมูล
+            });
+  
+            if (response.ok) {
+              console.log(`Item with ID ${itemId} has been deleted.`);
+              element.textContent = "Deleted"; // แสดงข้อความว่า 'Deleted'
+            } else {
+              const error = await response.json();
+              console.error(`Failed to delete item: ${error.message}`);
+              element.textContent = "Error deleting"; // แสดงข้อความ error
+            }
+          } catch (error) {
+            console.error('Error deleting item:', error);
+            element.textContent = "Error deleting"; // แสดงข้อความ error
+          }
+          fetchUserData();
+          
+        }, 3000);
       }
     });
   }, 1000); // อัปเดตทุก 1 วินาที
